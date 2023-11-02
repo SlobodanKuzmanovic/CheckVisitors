@@ -91,7 +91,7 @@ namespace ActiveVisitors.Server.Controllers
             {
                 ActiveVisitorsResult oneResult = new ActiveVisitorsResult();
 
-                oneResult.dateTime = ConvertToLocalDate(startTime.ToString());
+                oneResult.dateTime = ConvertToLocalDate(startTime.ToString()).ToString("yyyy-MM-dd'T'HH:mm:ss");
                 oneResult.total = finalList.Where(x => x.Timestamp > (startTime) && x.Timestamp < (startTime + 60 * 60 * 1000)).Count();
 
                 results.Add(oneResult);
@@ -157,7 +157,7 @@ namespace ActiveVisitors.Server.Controllers
 
     public class ActiveVisitorsResult
     {
-        public DateTime dateTime { get; set; }
+        public string dateTime { get; set; }
         public long total { get; set; }
     }
 
