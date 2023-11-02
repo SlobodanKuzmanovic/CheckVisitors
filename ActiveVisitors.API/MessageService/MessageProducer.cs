@@ -21,7 +21,7 @@ namespace ActiveVisitors.API.MessageService
 
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare("sightings", durable: true, exclusive: true);
+            channel.QueueDeclare("sightings", durable: false, exclusive: false);
 
             var jsonString = JsonSerializer.Serialize(message);
             var body = Encoding.UTF8.GetBytes(jsonString);
