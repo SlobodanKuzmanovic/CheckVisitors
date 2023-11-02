@@ -26,7 +26,7 @@ namespace ActiveVisitors.Server.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public List<ActiveVisitorsResult> Get(DateTime datetime, string cameras = "")
+        public List<ActiveVisitorsResult> Get(DateTime datetime, string? cameras = null)
         {
             var conn = new MongoDBConnection("mongodb://localhost:27017", "reports_data_sightings");
 
