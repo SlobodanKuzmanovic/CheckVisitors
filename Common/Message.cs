@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public class Visitors
+    public class Message
     {
-        public string dateTime { get; set; }
-        public long total { get; set; }         
+        public string date { get; set; }
+        public string cameras { get; set; } 
     }
 }
