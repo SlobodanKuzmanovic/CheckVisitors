@@ -1,6 +1,11 @@
-﻿using RabbitMQ.Client;
+﻿using Common;
+using Microsoft.VisualBasic;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace ActiveVisitors.API.MessageService
 {
@@ -28,5 +33,7 @@ namespace ActiveVisitors.API.MessageService
 
             channel.BasicPublish("", "sightings", body: body);
         }
+
+
     }
 }

@@ -11,4 +11,9 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\DBAccessLayer\DBAccessLayer.csproj" />
+  </ItemGroup>
+
 </Project>

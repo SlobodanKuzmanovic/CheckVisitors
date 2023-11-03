@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActiveVisitors.Server", "Ac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{38FC08D0-9755-4C54-A17B-AF4E324D38A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sightings.Server", "Sightings.Server\Sightings.Server.csproj", "{2782390B-B0CD-46A2-948C-70036E552720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sightings.Server", "Sightings.Server\Sightings.Server.csproj", "{2782390B-B0CD-46A2-948C-70036E552720}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAccessLayer", "DBAccessLayer\DBAccessLayer.csproj", "{999712BB-0DD9-4FED-B370-EC903F1787F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2782390B-B0CD-46A2-948C-70036E552720}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2782390B-B0CD-46A2-948C-70036E552720}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2782390B-B0CD-46A2-948C-70036E552720}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999712BB-0DD9-4FED-B370-EC903F1787F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999712BB-0DD9-4FED-B370-EC903F1787F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999712BB-0DD9-4FED-B370-EC903F1787F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999712BB-0DD9-4FED-B370-EC903F1787F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 using Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ActiveVisitors.API.Controllers
 {
@@ -11,14 +12,18 @@ namespace ActiveVisitors.API.Controllers
     {
 
         private readonly IMessageProducer _messageProducer;
+        private readonly IMessageProducerWithReply _messageProducerWithReply;
 
-        public ActiveVisitorsController(IMessageProducer messageProducer)
+        public ActiveVisitorsController(
+            IMessageProducer messageProducer,
+            IMessageProducerWithReply messageProducerWithReply)
         {
-                _messageProducer = messageProducer;
+            _messageProducer = messageProducer;
+            _messageProducerWithReply = messageProducerWithReply;
         }
 
         [HttpGet(Name = "GetActiveVisitors")]
-        public string GetActiveVisitors(string date, string? camerraIds = "")
+        public async Task<IActionResult> GetActiveVisitors(string date, string? camerraIds = "")
         {
             Message message = new Message()
             {
@@ -26,9 +31,9 @@ namespace ActiveVisitors.API.Controllers
                 cameras = camerraIds
             };
 
-            _messageProducer.SendingMessage<Message>(message);
+            var response = await _messageProducerWithReply.SendMessage<Message, Visitors>(message);
 
-            return "Slobodan";
+            return Ok(response);
         }
     }
 }

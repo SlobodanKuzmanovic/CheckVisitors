@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMessageProducer, MessageProducer>();
+builder.Services.AddScoped<IMessageProducerWithReply, MessageProducerWithReply>();
 
 var app = builder.Build();
 

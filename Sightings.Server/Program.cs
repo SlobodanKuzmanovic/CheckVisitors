@@ -1,34 +1,48 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Amazon.Runtime.Internal;
+using Common;
+using DBAccessLayer;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Text.Json;
 
-Console.WriteLine("Hello, World!");
-
-var factory = new ConnectionFactory()
+internal class Program
 {
-    HostName = "localhost",
-    UserName = "root",
-    Password = "password",
-    VirtualHost = "/"
-};
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("Hello, World!");
 
-using var connection = factory.CreateConnection();
+        var factory = Helper.CreateFactory();
+        using var connection = factory.CreateConnection();
+        using var channel = connection.CreateModel();
 
-using var channel = connection.CreateModel();
+        channel.QueueDeclare(QueueName.REQUEST_QUEUE.ToString(), exclusive: false);
 
-channel.QueueDeclare("sightings", durable: false, exclusive: false);
+        var consumer = new EventingBasicConsumer(channel);
 
-var consumer = new EventingBasicConsumer(channel);
+        consumer.Received += (model, ea) =>
+        {
+            var jsonSerialized = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-consumer.Received += (model, args) =>
-{
-    var body = args.Body.ToArray();
-    var message = Encoding.UTF8.GetString(body);
+            var obj = JsonSerializer.Deserialize<Message>(jsonSerialized);
 
-    Console.WriteLine(message);
-};
+            SightingsDBAccess db = new SightingsDBAccess();
 
-channel.BasicConsume("sightings", true, consumer);
+            var visitorsByHour = db.ReadData(Convert.ToDateTime(obj.date), obj.cameras);
 
-Console.ReadKey();
+
+            var replyMess = JsonSerializer.Serialize(visitorsByHour);
+            var body = Encoding.UTF8.GetBytes(replyMess);
+
+            var properties = channel.CreateBasicProperties();
+            properties.CorrelationId = ea.BasicProperties.CorrelationId;
+
+            channel.BasicPublish("", ea.BasicProperties.ReplyTo, properties, body);
+        };
+
+
+        channel.BasicConsume(QueueName.REQUEST_QUEUE.ToString(), autoAck: true, consumer: consumer);
+
+        Console.ReadLine();
+    }
+}
