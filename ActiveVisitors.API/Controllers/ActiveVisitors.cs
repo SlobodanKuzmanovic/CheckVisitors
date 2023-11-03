@@ -11,14 +11,11 @@ namespace ActiveVisitors.API.Controllers
     public class ActiveVisitorsController : ControllerBase
     {
 
-        private readonly IMessageProducer _messageProducer;
-        private readonly IMessageProducerWithReply _messageProducerWithReply;
+        private readonly IMessageProducer _messageProducerWithReply;
 
         public ActiveVisitorsController(
-            IMessageProducer messageProducer,
-            IMessageProducerWithReply messageProducerWithReply)
+            IMessageProducer messageProducerWithReply)
         {
-            _messageProducer = messageProducer;
             _messageProducerWithReply = messageProducerWithReply;
         }
 

@@ -10,7 +10,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Console.WriteLine("Server is running!");
 
         var factory = Helper.CreateFactory();
         using var connection = factory.CreateConnection();
