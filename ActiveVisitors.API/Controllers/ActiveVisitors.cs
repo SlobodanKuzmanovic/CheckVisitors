@@ -1,5 +1,5 @@
 ﻿using ActiveVisitors.API.MessageService;
-using Common;
+using Common.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;

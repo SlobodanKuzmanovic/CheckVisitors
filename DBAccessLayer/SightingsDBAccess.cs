@@ -1,4 +1,6 @@
 ﻿using Common;
+using Common.Enum;
+using Common.Model;
 using DBAccessLayer.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -29,17 +31,25 @@ namespace DBAccessLayer
             var startFilter = Builders<Sightings>.Filter.Gte(d => d.Timestamp, startTime);
             var endFilter = Builders<Sightings>.Filter.Lte(d => d.Timestamp, endTime);
 
-            List<FilterDefinition<Sightings>> filterlist = new List<FilterDefinition<Sightings>>();
-            filterlist.Add(startFilter);
-            filterlist.Add(endFilter);
+            FilterDefinition<Sightings> filterlist = Builders<Sightings>.Filter.Gte(d => d.Timestamp, startTime) & Builders<Sightings>.Filter.Lte(d => d.Timestamp, endTime);
+
             try
             {
-                foreach (var cam in cameras.Split(','))
+                var listOfCameras = cameras.Split(',');
+
+                if (listOfCameras.Count() > 0)
                 {
-                    if (!String.IsNullOrEmpty(cam))
+                    var builder = Builders<Sightings>.Filter;
+                    var cameraFilter = Builders<Sightings>.Filter.Eq(d => d.Camera, ObjectId.Parse(listOfCameras[0]));
+
+                    for (int i = 1; i < listOfCameras.Length; i++)
                     {
-                        filterlist.Add(Builders<Sightings>.Filter.Eq("camera", ObjectId.Parse(cam)));
+                        if (!String.IsNullOrEmpty(listOfCameras[i]))
+                        {
+                            cameraFilter |= Builders<Sightings>.Filter.Eq(d => d.Camera, ObjectId.Parse(listOfCameras[i]));
+                        }
                     }
+                    filterlist &= cameraFilter;
                 }
             }
             catch (Exception e)
@@ -65,7 +75,7 @@ namespace DBAccessLayer
 
                     for (int i = 0; i < tempGroup.Count; i++)
                     {
-                        var a = tempGroup.Where(x => x.Timestamp > first10MinStart && x.Timestamp < first10MinStart + (10 * 60 * 1000)).Count();
+                        var a = tempGroup.Where(x => x.Timestamp > first10MinStart && x.Timestamp < first10MinStart + (long)AdditionalTimeEnum.MINUTES_10).Count();
                         i += a;
                         if (i < tempGroup.Count)
                         {
@@ -83,11 +93,11 @@ namespace DBAccessLayer
                 Visitors oneResult = new Visitors();
 
                 oneResult.dateTime = Helper.ConvertToLocalDate(startTime.ToString()).ToString("yyyy-MM-dd'T'HH:mm:ss");
-                oneResult.total = finalList.Where(x => x.Timestamp > (startTime) && x.Timestamp < (startTime + 60 * 60 * 1000)).Count();
+                oneResult.total = finalList.Where(x => x.Timestamp > (startTime) && x.Timestamp < (startTime + (long)AdditionalTimeEnum.MINUTES_60)).Count();
 
                 results.Add(oneResult);
 
-                startTime = (startTime + 60 * 60 * 1000);
+                startTime = (startTime + (long)AdditionalTimeEnum.MINUTES_60);
             }
 
             return results;

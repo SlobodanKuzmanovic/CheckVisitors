@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Enum;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;

@@ -1,5 +1,7 @@
 ﻿using Amazon.Runtime.Internal;
 using Common;
+using Common.Enum;
+using Common.Model;
 using DBAccessLayer;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
