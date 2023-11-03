@@ -15,15 +15,20 @@ namespace DBAccessLayer
 {
     public class SightingsDBAccess
     {
+        public string connectionString { get; set; }
+        public string databaseName { get; set; }
+        public string collectionName { get; set; }
         public SightingsDBAccess()
         {
-                
+            connectionString = "mongodb://localhost:27017";
+            databaseName = "reports_data_sightings";
+            collectionName = "reports_data_sightings";
         }
         public List<Visitors> ReadData(DateTime datetime, string? cameras = null)
         {
-            var conn = new MongoDBConnection("mongodb://localhost:27017", "reports_data_sightings");
+            var conn = new MongoDBConnection(connectionString, databaseName);
 
-            var mongoCollection = conn.GetCollection<Sightings>("reports_data_sightings");
+            var mongoCollection = conn.GetCollection<Sightings>(collectionName);
 
             long startTime = ((DateTimeOffset)datetime).ToUnixTimeMilliseconds();
             long endTime = ((DateTimeOffset)datetime.AddDays(1).AddMilliseconds(-1)).ToUnixTimeMilliseconds();
